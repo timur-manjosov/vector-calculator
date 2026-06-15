@@ -1,30 +1,40 @@
 import math
 
 class Vector:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self, *components):
+        self.components = components
+
 
     def show(self):
-        print(f"[ {self.x} , {self.y} ]")
+        print(f"{self.components}")
 
 
     def __add__(self, other):
-        new_x = self.x + other.x
-        new_y = self.y + other.y
-        return Vector(new_x, new_y)
+        if len(self.components) != len(other.components):
+            raise ValueError("Vectors must have the same dimension.")
+
+        new_components = []
+        for a, b in zip(self.components, other.components):
+            new_components.append(a + b)
+        return Vector(*new_components)
 
     def scale(self, scale_number):
-        new_x = self.x * scale_number
-        new_y = self.y * scale_number
-        return Vector(new_x, new_y)
+        new_components = []
+        for c in self.components:
+            new_components.append(c * scale_number)
+        return Vector(*new_components)
 
     def magnitude(self):
-        return math.sqrt(self.x**2 + self.y**2)
+        result = 0
+        for c in self.components:
+            result += c**2
+        return math.sqrt(result)
 
     def dot(self, other):
-        return self.x * other.x + self.y * other.y
-
+        result = 0
+        for a, b in zip(self.components, other.components):
+            result += a * b
+        return result
 
 # --- Demo: every operation once ---
 v1 = Vector(3, 4)
@@ -48,3 +58,4 @@ print(f"dot product v1 . v2 = {v1.dot(v2)}")
 right = Vector(1, 0)
 up = Vector(0, 1)
 print(f"dot product of perpendicular vectors = {right.dot(up)}")
+
