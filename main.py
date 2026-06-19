@@ -5,8 +5,9 @@ class Vector:
         self.components = components
 
 
-    def show(self):
-        print(f"{self.components}")
+
+    def __repr__(self):
+        return f"Vector{self.components}"
 
 
     def __add__(self, other):
@@ -54,19 +55,12 @@ class Vector:
 v1 = Vector(3, 4)
 v2 = Vector(1, 2)
 
-print("v1 =", end=" ")
-v1.show()
-print("v2 =", end=" ")
-v2.show()
+print("v1 = ", v1)
+print("v2 = ", v2)
 
-print("\nv1 + v2 =", end=" ")
-(v1 + v2).show()
+print("\nv1 + v2 = ", v1 + v2)
 
-print("v1 scaled by 2 =", end=" ")
-v4 = v1 * 2 
-v5 = 2 * v1
-v4.show()
-v5.show()
+print("v1 scaled by 2 = ", v1 * 2)
 
 print(f"\nmagnitude of v1 = {v1.magnitude()}")
 print(f"dot product v1 . v2 = {v1.dot(v2)}")
