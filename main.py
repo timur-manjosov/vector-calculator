@@ -51,6 +51,17 @@ class Vector:
             result += a * b
         return result
 
+    def normalize(self):
+        if all(x == 0 for x in self.components):
+            raise ValueError("The zero vector has no direction and cannot be normalized")
+
+        length = self.magnitude()
+        new_components = []
+        for c in self.components:
+            new_components.append(c / length)
+        return Vector(*new_components)
+
+
 # --- Demo: every operation once ---
 v1 = Vector(3, 4)
 v2 = Vector(1, 2)
@@ -70,3 +81,10 @@ right = Vector(1, 0)
 up = Vector(0, 1)
 print(f"dot product of perpendicular vectors = {right.dot(up)}")
 
+print(Vector(3, 4).normalize())
+print(Vector(3, 4).normalize().magnitude())
+
+try:
+    print(Vector(0,0).normalize())
+except ValueError as error:
+    print(f"Caught: {error}")
