@@ -1,65 +1,45 @@
 import math
 
+
 class Vector:
     def __init__(self, *components):
         self.components = components
 
-
-
     def __repr__(self):
         return f"Vector{self.components}"
-
 
     def __add__(self, other):
         if len(self.components) != len(other.components):
             raise ValueError("Vectors must have the same dimension.")
 
-        new_components = []
-        for a, b in zip(self.components, other.components):
-            new_components.append(a + b)
-        return Vector(*new_components)
+        return Vector(*[a + b for a, b in zip(self.components, other.components)])
 
     def __sub__(self, other):
         if len(self.components) != len(other.components):
             raise ValueError("Vectors must have the same dimension.")
 
-        new_components = []
-        for a, b in zip(self.components, other.components):
-            new_components.append(a - b)
-        return Vector(*new_components)
+        return Vector(*[a - b for a, b in zip(self.components, other.components)])
 
     def __mul__(self, scale_number):
-        new_components = []
-        for c in self.components:
-            new_components.append(c * scale_number)
-        return Vector(*new_components)
+        return Vector(*[c * scale_number for c in self.components])
 
     def __rmul__(self, scale_number):
         return self * scale_number
 
     def magnitude(self):
-        result = 0
-        for c in self.components:
-            result += c**2
-        return math.sqrt(result)
+        return math.sqrt(sum(c**2 for c in self.components))
 
     def dot(self, other):
         if len(self.components) != len(other.components):
             raise ValueError("Vectors must have the same dimension.")
-        result = 0
-        for a, b in zip(self.components, other.components):
-            result += a * b
-        return result
+        return sum(a * b for a, b in zip(self.components, other.components))
 
     def normalize(self):
         if all(x == 0 for x in self.components):
             raise ValueError("The zero vector has no direction and cannot be normalized")
 
         length = self.magnitude()
-        new_components = []
-        for c in self.components:
-            new_components.append(c / length)
-        return Vector(*new_components)
+        return Vector(*[c / length for c in self.components])
 
 
 # --- Demo: every operation once ---
