@@ -36,10 +36,23 @@ class Vector:
 
     def normalize(self):
         if all(x == 0 for x in self.components):
-            raise ValueError("The zero vector has no direction and cannot be normalized")
+            raise ValueError(
+                "The zero vector has no direction and cannot be normalized."
+            )
 
         length = self.magnitude()
         return Vector(*[c / length for c in self.components])
+
+    def angle(self, other):
+        cos_theta = self.normalize().dot(other.normalize())
+        cos_theta = max(-1, min(1, cos_theta))
+        return math.acos(cos_theta)
+
+    def project_onto(self, other):
+        if all(x == 0 for x in other.components):
+            raise ValueError("Cannot project onto the zero vector.")
+        t = self.dot(other) / other.dot(other)
+        return t * other
 
 
 # --- Demo: every operation once ---
@@ -64,7 +77,11 @@ print(f"dot product of perpendicular vectors = {right.dot(up)}")
 print(Vector(3, 4).normalize())
 print(Vector(3, 4).normalize().magnitude())
 
+angle1 = Vector(1, 0).angle(Vector(0, 1))
+print("The angle is: ", angle1)
+print(f"The projection of vector1 is : {v1.project_onto(Vector(1, 0))}")
+
 try:
-    print(Vector(0,0).normalize())
+    print(Vector(0, 0).normalize())
 except ValueError as error:
     print(f"Caught: {error}")
